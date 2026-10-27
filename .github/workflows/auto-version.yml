@@ -21,7 +21,7 @@ jobs:
       tag_name: ${{ steps.semver.outputs.tag_name }}
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
