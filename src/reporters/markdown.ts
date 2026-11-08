@@ -250,7 +250,12 @@ export function generateMarkdownReport(report: AuditReport): string {
 
   sections.push("---");
   sections.push(
-    `*Generado automáticamente por [Nemesis Audit Engine](https://github.com/glastor-core/nemesis) impulsado por Deno & TypeScript.*`,
+    `> 🛡️ *Audited by [GLASTOR® Nemesis](https://github.com/glastor-core/nemesis) • ⭐ Star us on GitHub!*`,
+    `<details><summary>🏅 Embed Nemesis badge in your README</summary>\n`,
+    "```markdown",
+    `[![Protected by Nemesis](https://img.shields.io/badge/Security-Protected%20by%20Nemesis-6C5CE7?style=flat&logo=shield)](https://github.com/glastor-core/nemesis)`,
+    "```",
+    "\n</details>",
   );
 
   return sections.join("\n");
