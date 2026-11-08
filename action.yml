@@ -152,7 +152,7 @@ runs:
         deno-version: v2.x
 
     - name: Cache Trivy Vulnerability Database
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.cache/trivy
         key: trivy-db-${{ runner.os }}-${{ github.run_id }}

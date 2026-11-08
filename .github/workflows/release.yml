@@ -3,7 +3,7 @@ name: Release Standalone Binaries
 on:
   push:
     tags:
-      - "v*"
+      - "v*.*.*"
   workflow_call:
     inputs:
       tag_name:
@@ -26,7 +26,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag_name || github.ref_name }}
 
       - name: Setup Deno Runtime
         uses: denoland/setup-deno@v2
@@ -61,7 +63,7 @@ jobs:
           cat checksums.txt
 
       - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ inputs.tag_name || github.ref_name }}
           files: |

@@ -37,6 +37,15 @@ Este proyecto se adhiere a:
 
 ---
 
+## [1.4.0] - 2026-11-08
+
+### ✨ Added
+
+- feat(ci): integrate specter@v1 & vortex@v1, upgrade actions, and fix CLI
+  config (`c1a2f6e`)
+
+---
+
 ## [1.3.0] - 2026-10-24
 
 ### ✨ Added

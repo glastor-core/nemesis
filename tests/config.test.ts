@@ -38,3 +38,20 @@ Deno.test("loadConfig enables specific scanners when selectively called", () => 
   assertEquals(config.scanSast, false);
   assertEquals(config.scanSca, false);
 });
+
+Deno.test("loadConfig preserves CLI flags even inside GITHUB_ACTIONS runner", () => {
+  const prev = Deno.env.get("GITHUB_ACTIONS");
+  Deno.env.set("GITHUB_ACTIONS", "true");
+  try {
+    const config = loadConfig(["--path", "ci-repo", "--hygiene"]);
+    assertEquals(config.targetPath, "ci-repo");
+    assertEquals(config.scanHygiene, true);
+    assertEquals(config.scanSast, false);
+  } finally {
+    if (prev === undefined) {
+      Deno.env.delete("GITHUB_ACTIONS");
+    } else {
+      Deno.env.set("GITHUB_ACTIONS", prev);
+    }
+  }
+});

@@ -1,7 +1,7 @@
 import { join } from "@std/path";
 import { ensureDir, exists } from "@std/fs";
 import * as core from "@actions/core";
-import { loadConfig, showHelp } from "./config.ts";
+import { isActionExecution, loadConfig, showHelp } from "./config.ts";
 import {
   filterIgnoredFindings,
   loadNemesisFileConfig,
@@ -269,7 +269,7 @@ async function main() {
   }
 
   // 10. GitHub Actions Specific Outputs & PR Remediation
-  const isGitHubActions = !!Deno.env.get("GITHUB_ACTIONS");
+  const isGitHubActions = isActionExecution(Deno.args);
   if (isGitHubActions) {
     try {
       await core.summary.addRaw(markdownContent).write();

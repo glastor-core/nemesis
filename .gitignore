@@ -6,6 +6,8 @@ dist/
 # Reports
 .nemesis-reports/
 .test-reports/
+.specter/
+.vortex/
 *-report.json
 *-report.md
 *-report.sarif

@@ -5,25 +5,40 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
+  pull-requests: write
+  security-events: write
 
 jobs:
   test-and-check:
-    name: Lint, Type Check & Test
+    name: Lint, Type Check, Test, Specter & Vortex AST
     runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.vortex.outputs.should-run }}
+      execution_mode: ${{ steps.vortex.outputs.execution-mode }}
+      matrix: ${{ steps.vortex.outputs.matrix }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup Deno
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
 
-      - name: Linter Check
-        run: deno lint
+      - name: Format & Linter Check
+        run: |
+          deno fmt --check
+          deno lint
 
       - name: Type Check
         run: deno check src/main.ts
@@ -35,7 +50,57 @@ jobs:
         run: |
           deno compile --allow-all --output bin/nemesis src/main.ts
           ./bin/nemesis --help
+          rm -rf bin
 
       - name: Run Nemesis Self-Audit
         run: |
-          ./bin/nemesis --path . --output-dir .test-reports
+          deno run --allow-all src/main.ts --path . --output-dir .test-reports
+          rm -rf .test-reports
+
+      - name: Run Specter Polyglot AST API Contract & SemVer Gatekeeper
+        id: specter
+        uses: glastor-core/specter@v1
+        with:
+          head-dir: "."
+          base-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || 'HEAD~1' }}
+          fail-on-trojan: "true"
+          output-json: ".specter/audit.json"
+          output-sarif: ".specter/specter.sarif"
+          output-sbom: ".specter/specter.cdx.json"
+
+      - name: Run Vortex AST Predictive CI & LPT Sharding
+        id: vortex
+        uses: glastor-core/vortex@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          shards: "2"
+          symbol-pruning: "true"
+          post-pr-comment: "true"
+          base-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || 'HEAD~1' }}
+          head-ref: "HEAD"
+
+  surgical-tests:
+    name: "Surgical Test Shard (${{ matrix.shard_id }}/${{ matrix.shard_total }})"
+    needs: test-and-check
+    if: needs.test-and-check.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.test-and-check.outputs.matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Execute Assigned Test Suites
+        shell: bash
+        env:
+          VORTEX_SHARD_FILES: ${{ matrix.test_files }}
+        run: |
+          read -r -a TEST_FILES <<< "$VORTEX_SHARD_FILES"
+          deno test --allow-all "${TEST_FILES[@]}"

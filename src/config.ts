@@ -25,6 +25,13 @@ function getActionBooleanInput(name: string, defaultValue: boolean): boolean {
   }
 }
 
+export function isActionExecution(cliArgs: string[]): boolean {
+  return !!Deno.env.get("GITHUB_ACTIONS") &&
+    cliArgs.length === 0 &&
+    (Deno.env.get("INPUT_TARGET_PATH") !== undefined ||
+      Deno.env.get("INPUT_SCAN_SECRETS") !== undefined);
+}
+
 export function loadConfig(cliArgs: string[]): NemesisConfig {
   const parsed = parseArgs(cliArgs, {
     string: [
@@ -80,7 +87,7 @@ export function loadConfig(cliArgs: string[]): NemesisConfig {
     },
   });
 
-  const isGitHubActions = !!Deno.env.get("GITHUB_ACTIONS");
+  const isGitHubActions = isActionExecution(cliArgs);
 
   const scanAll = parsed.all ?? false;
   const hasSecretsFlag = cliArgs.includes("--secrets") ||
