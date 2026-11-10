@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/marketplace/actions/nemesis-universal-security-hygiene-compliance-auditor"><img src="https://img.shields.io/badge/GitHub_Marketplace-Nemesis-purple.svg?logo=github&style=for-the-badge" alt="GitHub Marketplace" /></a>
+  <a href="https://github.com/denolib/awesome-deno"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome Deno" /></a>
   <a href="https://github.com/glastor-core/nemesis/actions"><img src="https://img.shields.io/github/actions/workflow/status/glastor-core/nemesis/ci.yml?branch=main&label=CI%20Audit&style=for-the-badge" alt="CI Status" /></a>
   <a href="https://deno.com"><img src="https://img.shields.io/badge/Deno-v2.x-000000.svg?logo=deno&style=for-the-badge" alt="Deno Runtime" /></a>
   <a href="https://cyclonedx.org"><img src="https://img.shields.io/badge/SBOM-CycloneDX%201.5-blueviolet?style=for-the-badge" alt="CycloneDX SBOM" /></a>
