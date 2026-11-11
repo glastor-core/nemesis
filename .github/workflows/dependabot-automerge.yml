@@ -1,0 +1,13 @@
+﻿name: 🤖 Dependabot Auto-Merge
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    name: Auto-Merge
+    uses: glastor-core/.github/.github/workflows/reusable-automerge.yml@main

@@ -1,0 +1,28 @@
+﻿name: 🏥 Repository Health & Security Gate
+
+on:
+  schedule:
+    # Run weekly on Monday at 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'README.md'
+      - 'docs/**'
+      - '*.md'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  security-events: write
+
+jobs:
+  health:
+    name: Health & Integrity
+    uses: glastor-core/.github/.github/workflows/reusable-health.yml@main
+    with:
+      check-links: true
+      check-rust-security: false
+      check-nemesis: true
