@@ -37,6 +37,28 @@ Este proyecto se adhiere a:
 
 ---
 
+## [1.5.0] - 2026-11-15
+
+### ✨ Added
+
+- feat(ci): add project roadmap triage automation workflow (`6ae3fe9`)
+- feat(action): add viral sticky PR comment footer and copyable README badge
+  (`881720b`)
+
+### 🐛 Fixed
+
+- fix(ci): format workflows with deno fmt and open release PRs in auto-version
+  (`1c31717`)
+
+### 🔄 Changed & Maintenance
+
+- ci(health): add automated repository health gate and dependabot auto-merge
+  (`a2b4860`)
+- docs: add awesome-deno and crates.io download & version badges (`a5a6414`)
+- docs(readme): translate documentation to English (`26fde72`)
+
+---
+
 ## [1.4.0] - 2026-11-08
 
 ### ✨ Added
