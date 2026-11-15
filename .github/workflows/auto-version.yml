@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   bump-version:
@@ -51,9 +52,17 @@ jobs:
           MAJOR_TAG=$(echo "${{ steps.semver.outputs.tag_name }}" | cut -d. -f1)
           git tag -fa "$MAJOR_TAG" -m "Release $MAJOR_TAG"
 
-          git push origin HEAD:${{ github.ref_name }}
+          RELEASE_BRANCH="release/${{ steps.semver.outputs.tag_name }}"
+          git push origin "HEAD:${RELEASE_BRANCH}" --force
+          gh pr create \
+            --base "${{ github.ref_name }}" \
+            --head "${RELEASE_BRANCH}" \
+            --title "chore(release): bump version to ${{ steps.semver.outputs.tag_name }}" \
+            --body "Automated semantic version bump to \`${{ steps.semver.outputs.tag_name }}\`." || true
           git push origin "${{ steps.semver.outputs.tag_name }}"
           git push origin "$MAJOR_TAG" --force
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-release:
     name: Build & Publish Release

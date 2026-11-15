@@ -1,16 +1,16 @@
-﻿name: 🏥 Repository Health & Security Gate
+name: 🏥 Repository Health & Security Gate
 
 on:
   schedule:
     # Run weekly on Monday at 06:00 UTC
-    - cron: '0 6 * * 1'
+    - cron: "0 6 * * 1"
   workflow_dispatch:
   pull_request:
     branches: [main]
     paths:
-      - 'README.md'
-      - 'docs/**'
-      - '*.md'
+      - "README.md"
+      - "docs/**"
+      - "*.md"
 
 permissions:
   contents: read
