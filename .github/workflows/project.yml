@@ -1,0 +1,19 @@
+name: ⚡ Project Roadmap Automation
+
+on:
+  issues:
+    types: [opened, reopened]
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  issues: write
+  pull-requests: write
+  repository-projects: write
+
+jobs:
+  triage:
+    name: Project Triage
+    uses: glastor-core/.github/.github/workflows/reusable-project-triage.yml@main
+    secrets:
+      PROJECT_PAT: ${{ secrets.PROJECT_PAT }}
