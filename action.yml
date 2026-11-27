@@ -181,7 +181,7 @@ runs:
         # Install Trivy if missing
         if ! command -v trivy &> /dev/null && ([ "${{ inputs.scan-sca }}" = "true" ] || [ "${{ inputs.scan-licenses }}" = "true" ] || [ "${{ inputs.generate-sbom }}" = "true" ]); then
           echo "[Nemesis] Installing Trivy..."
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.76.0
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.76.2
         fi
 
     - name: Run Nemesis Auditor
