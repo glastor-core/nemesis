@@ -37,6 +37,19 @@ Este proyecto se adhiere a:
 
 ---
 
+## [1.5.1] - 2026-11-27
+
+### 🐛 Fixed
+
+- fix(trivy): bump Trivy installer version from v0.76.0 to v0.76.2 (`c0a6964`)
+
+### 🔄 Changed & Maintenance
+
+- style(docs): format CONTRIBUTING.md with deno fmt (`1fa05b3`)
+- docs: sync CONTRIBUTING.md to org GitHub/CNCF standard (`5ff7ee8`)
+
+---
+
 ## [1.4.0] - 2026-11-08
 
 ### ✨ Added
